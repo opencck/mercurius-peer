@@ -12,7 +12,7 @@ use function Mercurius\Peer\t;
  * An agent's ECDSA key (P-256): made once, kept by the application. Every request and answer between agents is signed
  * with it, so agents tell each other apart by the fingerprint of the public key, not by a shared token.
  *
- * spec: BRIEF.md#сеть-агентов — the owner's decision of 2026-11-17: identity by an ECDSA key pair
+ * spec: brief/network.md#сеть-агентов-1 — the owner's decision of 2026-11-17: identity by an ECDSA key pair
  */
 final class AgentIdentity {
     private function __construct(
@@ -98,7 +98,7 @@ final class AgentIdentity {
      * The address an instance answers at, in one spelling: scheme, host in lower case, a port only when it is not
      * the default. ws and wss are http and https — the same instance takes both.
      *
-     * spec: BRIEF.md#решения-по-доработкам-2026-11-18 — signatures between agents name the address they are for
+     * spec: brief/decisions.md#решения-по-доработкам-2026-11-18 — signatures between agents name the address they are for
      */
     public static function audience(string $url): string {
         $parts = parse_url(trim($url));
@@ -131,7 +131,7 @@ final class AgentIdentity {
      * What the follower signs on a WebSocket handshake: both random numbers and the leader's fingerprint, so the
      * signature serves this connection to this leader only.
      *
-     * spec: BRIEF.md#вход-по-websocket-и-несколько-ключей-решение-владельца-2026-11-17
+     * spec: brief/network.md#вход-по-websocket-и-несколько-ключей-решение-владельца-2026-11-17
      */
     public static function wsServerData(string $clientNonce, string $serverNonce, string $clientFingerprint, string $audience): string {
         return implode("

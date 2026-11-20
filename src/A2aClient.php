@@ -19,9 +19,9 @@ use function Mercurius\Peer\t;
  * signed). This agent presents to each neighbour the key chosen for it; an answer counts only when it comes from the
  * key pinned for the neighbour. Errors carry no token.
  *
- * spec: BRIEF.md#вход-по-websocket-и-несколько-ключей-решение-владельца-2026-11-17
+ * spec: brief/network.md#вход-по-websocket-и-несколько-ключей-решение-владельца-2026-11-17
  *
- * spec: BRIEF.md#сеть-агентов
+ * spec: brief/network.md#сеть-агентов-1
  * ref: references/hermes-agent/plugins/platforms/a2a/tools.py@e96221fa:L146-L254 — discover, call and check a remote
  *      agent; here without streaming: the leader polls GetTask
  */
@@ -48,7 +48,7 @@ final class A2aClient {
     /**
      * What this agent tells of itself on the way in: a name (the first label of its host) and its address.
      *
-     * spec: BRIEF.md#незнакомый-агент-стучится-решение-владельца-2026-11-17
+     * spec: brief/network.md#незнакомый-агент-стучится-решение-владельца-2026-11-17
      *
      * @return array{name?: string, url?: string}
      */
@@ -107,7 +107,7 @@ final class A2aClient {
      * The card of the agent at this address, with proof that it holds the key of the card: it signs a random number
      * of ours together with its address. A card copied from another agent, or fetched from it on our behalf, fails.
      *
-     * spec: BRIEF.md#решения-по-доработкам-2026-11-18 — a neighbour is added only when its card proves the key
+     * spec: brief/decisions.md#решения-по-доработкам-2026-11-18 — a neighbour is added only when its card proves the key
      * @return array<array-key, mixed>
      * @throws RuntimeException the card does not prove its key
      */
@@ -131,7 +131,7 @@ final class A2aClient {
      * @return array<array-key, mixed> the task
      */
     public function send(PeerEndpoint $peer, #[SensitiveParameter] string $token, string $messageId, string $text, int $depth, array $path, ?Cancellation $cancellation = null, array $files = [], ?string $contextId = null, array $lead = []): array {
-        // spec: BRIEF.md#между-агентами — files go ahead by POST /a2a/files (form-data); bytes in the message only by
+        // spec: brief/internet.md#между-агентами — files go ahead by POST /a2a/files (form-data); bytes in the message only by
         // WebSocket when A2A_FILE_TRANSPORT=ws
         $refs = [];
         if ($files !== [] && !($this->fileTransport === 'ws' && self::transport($peer) === 'ws')) {
@@ -262,7 +262,7 @@ final class A2aClient {
     /**
      * The parameters of SendMessage: the text and the files as parts of A2A v1 (raw bytes in base64, a file name).
      *
-     * spec: BRIEF.md#личные-сообщения-участникам — not only text: files to other agents
+     * spec: brief/channels.md#личные-сообщения-участникам — not only text: files to other agents
      *
      * @param list<string> $path
      * @param list<array{name: string, bytes: string}> $files bytes in the message (WebSocket)
@@ -281,7 +281,7 @@ final class A2aClient {
         }
         $message = ['role' => 'ROLE_USER', 'messageId' => $messageId, 'parts' => $parts];
         if ($contextId !== null && $contextId !== '') {
-            // spec: BRIEF.md#сеть-агентов — an answer to a question of the neighbour goes into the same context
+            // spec: brief/network.md#сеть-агентов-1 — an answer to a question of the neighbour goes into the same context
             $message['contextId'] = $contextId;
         }
         return [
@@ -317,7 +317,7 @@ final class A2aClient {
      * The number a neighbour gave its task, when it is a plain number of letters, digits and - _ . : (up to 100), not a
      * path; null otherwise. The number is the neighbour's word: it is only shown and asked back, never made a path.
      *
-     * spec: BRIEF.md#решения-по-доработкам-2026-11-18 — files of an answer stay in the inbox of their task
+     * spec: brief/decisions.md#решения-по-доработкам-2026-11-18 — files of an answer stay in the inbox of their task
      * @param array<array-key, mixed> $task
      */
     public static function taskId(array $task): ?string {
@@ -376,7 +376,7 @@ final class A2aClient {
     private function socket(PeerEndpoint $peer, #[SensitiveParameter] string $token): A2aSocket {
         $identity = $this->identityFor($peer);
         $peerFingerprint = AgentIdentity::fingerprintOf($peer->peerPublicKey()) ?? '';
-        // spec: BRIEF.md#подключения-агентов-решение-владельца-2026-11-17 — any live connection with the neighbour serves,
+        // spec: brief/network.md#подключения-агентов-решение-владельца-2026-11-17 — any live connection with the neighbour serves,
         // whichever side opened it
         $live = $this->links?->to($peerFingerprint);
         if ($live !== null) {
