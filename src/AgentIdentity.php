@@ -12,7 +12,7 @@ use function Mercurius\Peer\t;
  * An agent's ECDSA key (P-256): made once, kept by the application. Every request and answer between agents is signed
  * with it, so agents tell each other apart by the fingerprint of the public key, not by a shared token.
  *
- * spec: brief/network.md#опознание-агентов-ключи-ecdsa — the owner's decision of 2026-11-17: identity by an ECDSA key pair
+ * spec: brief/network.md#опознание-агентов-ключи-ecdsa — identity by an ECDSA key pair
  */
 final class AgentIdentity {
     private function __construct(

@@ -25,11 +25,11 @@ final class PeerTest extends AsyncTestCase {
             public function __construct(private readonly ?array $card) {}
 
             public function peerName(): string {
-                return 'doorotar';
+                return 'neighbour';
             }
 
             public function peerUrl(): string {
-                return 'https://doorotar.example.com';
+                return 'https://neighbour.example.com';
             }
 
             public function peerPublicKey(): string {
@@ -49,7 +49,7 @@ final class PeerTest extends AsyncTestCase {
     public function testAKeySignsAndOnlyItsSignatureOfTheSameDataPasses(): void {
         $one = AgentIdentity::generate();
         $other = AgentIdentity::generate();
-        $data = AgentIdentity::requestData('POST', '/a2a', '1700000000', 'nonce', '{"a":1}', 'https://doorotar.example.com');
+        $data = AgentIdentity::requestData('POST', '/a2a', '1700000000', 'nonce', '{"a":1}', 'https://neighbour.example.com');
 
         $signature = $one->sign($data);
 
@@ -80,24 +80,24 @@ final class PeerTest extends AsyncTestCase {
     }
 
     public function testTheCardSaysTheTransport(): void {
-        self::assertSame('ws', A2aClient::transport(self::peer(['mercurius' => ['transport' => 'ws', 'ws' => 'wss://doorotar.example.com/a2a/ws']])));
-        self::assertSame('wss://doorotar.example.com/a2a/ws', A2aClient::socketUrl(self::peer(['mercurius' => ['ws' => 'wss://doorotar.example.com/a2a/ws']])));
+        self::assertSame('ws', A2aClient::transport(self::peer(['mercurius' => ['transport' => 'ws', 'ws' => 'wss://neighbour.example.com/a2a/ws']])));
+        self::assertSame('wss://neighbour.example.com/a2a/ws', A2aClient::socketUrl(self::peer(['mercurius' => ['ws' => 'wss://neighbour.example.com/a2a/ws']])));
         self::assertSame('http', A2aClient::transport(self::peer(null)), 'a neighbour added before its card said it');
-        self::assertSame('mercurius-doorotar', A2aClient::nameOfUrl('https://mercurius-doorotar.srv.example.com/'));
+        self::assertSame('mercurius-neighbour', A2aClient::nameOfUrl('https://mercurius-neighbour.srv.example.com/'));
     }
 
     public function testACardCountsOnlyWhenItProvesItsKey(): void {
         $neighbour = AgentIdentity::generate();
-        $base = 'https://doorotar.example.com';
+        $base = 'https://neighbour.example.com';
         $proving = new CardHttpFake(static function (string $nonce) use ($neighbour, $base): array {
-            return ['name' => 'doorotar', 'mercurius' => ['publicKey' => $neighbour->publicKey, 'proof' => $neighbour->sign(AgentIdentity::cardProofData($nonce, $base))]];
+            return ['name' => 'neighbour', 'mercurius' => ['publicKey' => $neighbour->publicKey, 'proof' => $neighbour->sign(AgentIdentity::cardProofData($nonce, $base))]];
         });
         $client = new A2aClient(new HttpClient($proving, []), AgentIdentity::generate());
-        self::assertSame('doorotar', $client->provenCard($base)['name'] ?? null);
+        self::assertSame('neighbour', $client->provenCard($base)['name'] ?? null);
 
         // a card copied from another agent: its proof was made for another number
         $copied = new CardHttpFake(static function (string $nonce) use ($neighbour, $base): array {
-            return ['name' => 'doorotar', 'mercurius' => ['publicKey' => $neighbour->publicKey, 'proof' => $neighbour->sign(AgentIdentity::cardProofData('old', $base))]];
+            return ['name' => 'neighbour', 'mercurius' => ['publicKey' => $neighbour->publicKey, 'proof' => $neighbour->sign(AgentIdentity::cardProofData('old', $base))]];
         });
         $this->expectException(RuntimeException::class);
         (new A2aClient(new HttpClient($copied, []), AgentIdentity::generate()))->provenCard($base);
