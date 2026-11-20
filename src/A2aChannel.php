@@ -9,7 +9,7 @@ use Amp\Cancellation;
 /**
  * Text frames between two agents over one connection (a WebSocket): the handshake that proves the keys, then JSON-RPC.
  *
- * spec: brief/network.md#вход-по-websocket-и-несколько-ключей-решение-владельца-2026-11-17
+ * spec: brief/network.md#вход-по-websocket-и-несколько-ключей
  */
 interface A2aChannel {
     public function send(string $text): void;

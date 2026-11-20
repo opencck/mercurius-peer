@@ -23,16 +23,16 @@ use function Mercurius\Peer\t;
  * on a full connection; a closed connection fails what waits. The connection goes both ways: a frame with a method is a
  * request of the other side, answered by the given handler (the other side's tasks for this agent); none — refused.
  *
- * spec: brief/network.md#подключения-агентов-решение-владельца-2026-11-17
+ * spec: brief/network.md#подключения-агентов
  *
- * spec: brief/network.md#вход-по-websocket-и-несколько-ключей-решение-владельца-2026-11-17
+ * spec: brief/network.md#вход-по-websocket-и-несколько-ключей
  */
 final class A2aSocket {
     /**
      * The version of the handshake: 2 — both signatures name the address dialed. An agent of another version is
      * turned away with this said, not with a signature that does not match.
      *
-     * spec: brief/decisions.md#решения-по-доработкам-2026-11-18
+     * spec: brief/network.md#подпись-адреса-доказательство-ключа-и-маскирование
      */
     public const VERSION = 2;
 
@@ -145,7 +145,7 @@ final class A2aSocket {
      * A notice to the other side: a JSON-RPC notification, no answer. Lost when the connection is gone — the other side
      * still polls.
      *
-     * spec: brief/network.md#сеть-агентов-1 — the end of a task is pushed over a live connection
+     * spec: brief/network.md#вход-по-websocket-и-несколько-ключей — the end of a task is pushed over a live connection
      * @param array<string, mixed> $params
      */
     public function notify(string $method, array $params): void {

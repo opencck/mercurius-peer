@@ -10,7 +10,7 @@ namespace Mercurius\Peer;
  * side opened it; a new one is opened only when there is none. The owner sees the list, the agent opens and closes
  * its own connections.
  *
- * spec: brief/network.md#подключения-агентов-решение-владельца-2026-11-17
+ * spec: brief/network.md#подключения-агентов
  */
 final class A2aLinks {
     public const OUT = 'out';
