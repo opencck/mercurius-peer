@@ -1,6 +1,6 @@
 # mercurius-peer
 
-**English** | [Русский](README.ru.md)
+**English** | [Русский](README.ru.md) | [中文](README.cn.md)
 
 The agent-to-agent side of an AMPHP agent, A2A v1.0: an agent is known by its ECDSA P-256 key, not by a shared
 token. The client fetches a neighbour's card and checks that the card proves its key, sends a task and asks for its
