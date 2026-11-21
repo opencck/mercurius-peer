@@ -2,6 +2,8 @@
 
 [English](README.md) | [Русский](README.ru.md) | **中文**
 
+> 本文由模型翻译，尚未经人工审校；如有出入，以英文版为准。
+
 AMPHP 智能体的智能体间通信部分，A2A v1.0：智能体由其 ECDSA P-256 密钥标识，而非共享令牌。客户端获取邻居的卡片并检查该卡片能证明其密钥，发送任务并查询其状态或取消——通过一条握手时验证双方密钥的 WebSocket，或通过每个请求都签名的 HTTP——并在消息之前发送文件。
 
 属于 [Mercurius](https://github.com/opencck/mercurius)——一个自主的个人智能体。该软件包不依赖 Mercurius 应用，可以单独使用。
